@@ -1,0 +1,93 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Vehicle Price Prediction</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#predictForm').on('submit', function(e) {
+                e.preventDefault();
+                console.log("Form submitted");
+                
+                var formData = $(this).serialize();
+                console.log("Form data:", formData);
+                
+                $.ajax({
+                    type: 'POST',
+                    url: '/predict?nocache=' + new Date().getTime(),
+                    data: formData,
+                    cache: false,
+                    success: function(response) {
+                        console.log("Received response:", response);
+                        if(response.prediction_text) {
+                            $('#predictionText').text(response.prediction_text);
+                        } else if(response.error) {
+                            $('#predictionText').text("Error: " + response.error);
+                        } else {
+                            $('#predictionText').text("Unexpected response format");
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.error('Error:', textStatus, errorThrown);
+                        $('#predictionText').text('An error occurred. Please try again.');
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <h1>Enter Vehicle Details</h1>
+    <form id="predictForm" action="/predict" method="post">
+        <label for="manufactor">Manufacturer:</label>
+        <input type="text" id="manufactor" name="manufactor"><br><br>
+
+        <label for="model">Model:</label>
+        <input type="text" id="model" name="model"><br><br>
+
+        <label for="Year">Year:</label>
+        <input type="text" id="Year" name="Year"><br><br>
+
+        <label for="Hand">Hand:</label>
+        <input type="text" id="Hand" name="Hand"><br><br>
+
+        <label for="Gear">Gear:</label>
+        <input type="text" id="Gear" name="Gear"><br><br>
+
+        <label for="capacity_Engine">Engine Capacity:</label>
+        <input type="text" id="capacity_Engine" name="capacity_Engine"><br><br>
+
+        <label for="Engine_type">Engine Type:</label>
+        <input type="text" id="Engine_type" name="Engine_type"><br><br>
+
+        <label for="Prev_ownership">Previous Ownership:</label>
+        <input type="text" id="Prev_ownership" name="Prev_ownership"><br><br>
+
+        <label for="Curr_ownership">Current Ownership:</label>
+        <input type="text" id="Curr_ownership" name="Curr_ownership"><br><br>
+
+        <label for="Pic_num">Number of Pictures:</label>
+        <input type="text" id="Pic_num" name="Pic_num"><br><br>
+
+        <label for="Description">Description:</label>
+        <input type="text" id="Description" name="Description"><br><br>
+
+        <label for="Color">Color:</label>
+        <input type="text" id="Color" name="Color"><br><br>
+
+        <label for="is_reposted">Is Reposted:</label>
+        <input type="text" id="is_reposted" name="is_reposted"><br><br>
+
+        <input type="submit" value="Value Price">
+    </form>
+
+    <div id="result">
+        <h2 id="predictionText">{% if prediction_text %}{{ prediction_text }}{% endif %}</h2>
+    </div>
+</body>
+</html>
