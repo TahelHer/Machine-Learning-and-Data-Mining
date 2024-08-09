@@ -1,11 +1,3 @@
-
-# -*- coding: utf-8 -*-
-"""
-Created on Sat Jul 20 15:54:34 2024
-
-@author: Tahel Hermon
-"""
-
 import pandas as pd
 import warnings
 import numpy as np
