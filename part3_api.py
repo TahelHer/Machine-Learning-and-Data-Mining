@@ -1,7 +1,3 @@
-
-
-
-
 from flask import Flask, request, jsonify, render_template, session
 import joblib
 import pandas as pd
